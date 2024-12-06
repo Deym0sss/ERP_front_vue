@@ -12,6 +12,8 @@
     "ant-design-vue": "^4.2.6",
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
+    "less": "^4.2.1",
+    "less-loader": "^12.2.0",
     "vue": "^3.2.13",
     "vue-router": "^4.5.0"
   },

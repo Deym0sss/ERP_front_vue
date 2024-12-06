@@ -1,12 +1,16 @@
 <template>
   <div class="wrapper">
     <MyHeader />
-    <a-table :columns="columns" :data-source="dataSource">
+    <a-table
+      :columns="columns"
+      :data-source="dataSource"
+      style="padding: 20px"
+      bordered
+    >
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
           <span>
             <a-button @click="onDelete(record)">Delete</a-button>
-            <a-divider type="vertical" />
           </span>
         </template>
       </template>
@@ -46,6 +50,7 @@ export default {
         {
           title: "Action",
           key: "action",
+          width: "8%",
         },
       ],
     };
@@ -65,11 +70,11 @@ export default {
           locationId: this.locationUrl,
         })
         .then(() => {
-          this.getUsersBylocation(); // Перезагружаем таблицу
-          this.$message.success("Пользователь удален");
+          this.getUsersBylocation();
+          this.$message.success("User deleted");
         })
         .catch((error) => {
-          this.$message.error("Ошибка при удалении пользователя");
+          this.$message.error("Error");
           console.error(error);
         });
     },

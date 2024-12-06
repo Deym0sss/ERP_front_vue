@@ -11,13 +11,12 @@
         >
           <p class="cardTitle">{{ location.title }}</p>
         </div>
+        <div class="card create-location-card" @click.stop="createLocation">
+          <p class="cardTitle">Create location</p>
+        </div>
       </div>
       <div v-else>
         <p>Loading locations...</p>
-      </div>
-
-      <div class="card" @click.stop="createLocation">
-        <p class="cardTitle">Create location</p>
       </div>
     </div>
   </div>
@@ -77,24 +76,30 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
   padding-top: 10%;
 }
+
 .locations {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5%;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
 }
+
 .card {
-  margin: 20px;
   width: 300px;
   height: 300px;
   border: 2px solid #0d99ff;
   background-color: #0d99ff;
   border-radius: 5px;
   display: flex;
-  align-items: center; /* По вертикали */
-  justify-content: center; /* По горизонтали */
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
+
 .cardTitle {
   width: 100%;
   font-family: "Poppins";
@@ -102,5 +107,18 @@ export default {
   color: white;
   text-align: center;
   font-size: 36px;
+}
+
+.create-location-card {
+  width: 300px;
+  height: 300px;
+  border: 2px solid #0d99ff;
+  background-color: #0d99ff;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  text-align: center;
 }
 </style>

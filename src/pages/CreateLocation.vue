@@ -119,8 +119,6 @@
 
 <script setup>
 import MyHeader from "@/components/UI/MyHeader.vue";
-
-// eslint-disable-next-line no-unused-vars
 import router from "@/router/router";
 import axios from "axios";
 import { onMounted, ref, reactive } from "vue";

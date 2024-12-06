@@ -43,7 +43,6 @@ export default {
     },
     hide() {
       this.visible = false;
-      console.log(this.visible);
       router.push("/login");
       localStorage.removeItem("userId");
       localStorage.removeItem("userName");

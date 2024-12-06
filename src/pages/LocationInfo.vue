@@ -46,7 +46,22 @@
     </div>
     <!--  -->
     <div class="table">
-      <a-table bordered :dataSource="dataSource" :columns="columns" />
+      <a-table bordered :dataSource="dataSource" :columns="columns"
+        ><template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'action'">
+            <span
+              style="
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+              "
+            >
+              <a-button @click="onOpenAsset(record)">Open</a-button>
+              <a-button @click="onDeleteAsset(record)">Delete</a-button>
+            </span>
+          </template>
+        </template></a-table
+      >
     </div>
     <!--  -->
     <div class="location__btns">
@@ -87,6 +102,7 @@ export default {
           title: "Title",
           dataIndex: "title",
           key: "title",
+          width: "25%",
         },
         {
           title: "Tag",
@@ -95,13 +111,19 @@ export default {
         },
         {
           title: "Amount",
-          dataIndex: "Value",
+          dataIndex: "value",
           key: "value",
+          width: "15%",
         },
         {
           title: "Cost",
           dataIndex: "cost",
           key: "cost",
+        },
+        {
+          title: "Action",
+          key: "action",
+          width: "15%",
         },
       ],
     };
@@ -125,6 +147,13 @@ export default {
           this.getLogo();
         });
     },
+    getAssetsInfo() {
+      axios
+        .get(`http://localhost:5000/asset/all/${this.locationId}`)
+        .then((response) => {
+          this.dataSource = JSON.parse(JSON.stringify(response.data.assets));
+        });
+    },
 
     getLogo() {
       if (this.locationInfo) {
@@ -142,18 +171,42 @@ export default {
       router.push(`/staff/${this.locationId}`);
     },
     goToCreateAsset() {
-      router.push("/asset/create");
+      router.push({
+        path: "/asset/create",
+        query: { locationId: this.locationId },
+      });
     },
     goToInventory() {
-      router.push("/location/create/inventory");
+      router.push(`/location/create/inventory/${this.locationId}`);
     },
     goToOrdersInfo() {
-      router.push("/orders");
+      router.push(`/orders/${this.locationId}`);
+    },
+
+    onDeleteAsset(asset) {
+      axios
+        .delete(`http://localhost:5000/asset/${asset._id}`)
+        .then(() => {
+          this.getAssetsInfo();
+          this.$message.success("Asset deleted");
+          axios.put(`http://localhost:5000/location/removeAsset`, {
+            assetId: asset._id,
+            locationId: this.locationId,
+          });
+        })
+        .catch((error) => {
+          this.$message.error("Error");
+          console.error(error);
+        });
+    },
+    onOpenAsset(asset) {
+      router.push(`/asset/${asset._id}`);
     },
   },
   mounted() {
     this.getLocationInfo();
     this.getStaffInfo();
+    this.getAssetsInfo();
   },
 };
 </script>
