@@ -49,7 +49,7 @@
           bordered
         >
           <template #bodyCell="{ column, text, record }">
-            <!-- Title -->
+            <!--  -->
             <template v-if="column.dataIndex === 'title'">
               <div>
                 <a-select
@@ -63,7 +63,7 @@
                 </template>
               </div>
             </template>
-            <!-- Value -->
+            <!--  -->
             <template v-else-if="column.dataIndex === 'value'">
               <div>
                 <a-input
