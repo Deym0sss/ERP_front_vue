@@ -27,7 +27,6 @@
         <p>{{ this.assetInfo.cost }}</p>
       </div>
     </div>
-    <!--  -->
     <div>
       <img class="image" v-if="imgUrl" :src="imgUrl" alt="Image" />
     </div>

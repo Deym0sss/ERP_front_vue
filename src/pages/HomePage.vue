@@ -2,7 +2,7 @@
   <div class="home">
     <MyHeader></MyHeader>
     <div class="content">
-      <div class="locations" v-if="locationsData !== null">
+      <div class="locations">
         <div
           class="card"
           v-for="location in locationsData"
@@ -15,9 +15,7 @@
           <p class="cardTitle">Create location</p>
         </div>
       </div>
-      <div v-else>
-        <p>Loading locations...</p>
-      </div>
+      <div v-if="locationsData === null"></div>
     </div>
   </div>
 </template>
