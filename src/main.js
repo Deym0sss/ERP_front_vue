@@ -3,7 +3,6 @@ import App from "./App.vue";
 import Antd from "ant-design-vue";
 import components from "@/components/UI";
 import router from "./router/router";
-import Benchmark from "benchmark";
 
 const app = createApp(App);
 
