@@ -40,8 +40,8 @@
         <a-button @click="goToStaffInfo" class="staffBtn">Manage</a-button>
       </div>
 
-      <div class="content__logo">
-        <img v-if="logoUrl" :src="logoUrl" alt="Logo" />
+      <div>
+        <img class="content__logo" v-if="logoUrl" :src="logoUrl" alt="Logo" />
       </div>
     </div>
     <!--  -->
@@ -256,6 +256,7 @@ p {
 }
 .staffBtn {
   width: 100px;
+  height: 30px;
   margin-top: auto;
   margin-left: auto;
   border: 1px solid rgb(247, 189, 83);
@@ -304,5 +305,9 @@ p {
 .location__btns__manage {
   display: flex;
   flex-direction: row;
+}
+.content__logo {
+  width: 300px;
+  height: 300px;
 }
 </style>
