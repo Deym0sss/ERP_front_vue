@@ -66,19 +66,24 @@
     <!--  -->
     <div class="location__btns">
       <div>
-        <a-button class="location__btns__element" @click="goToCreateAsset"
-          >Add asset</a-button
-        >
+        <a-button class="location__btns__delete">Delete location</a-button>
       </div>
-      <div>
-        <a-button class="location__btns__element" @click="goToInventory"
-          >Inventorize</a-button
-        >
-      </div>
-      <div>
-        <a-button class="location__btns__element" @click="goToOrdersInfo"
-          >Orders</a-button
-        >
+      <div class="location__btns__manage">
+        <div>
+          <a-button class="location__btns__element" @click="goToCreateAsset"
+            >Add asset</a-button
+          >
+        </div>
+        <div>
+          <a-button class="location__btns__element" @click="goToInventory"
+            >Inventorize</a-button
+          >
+        </div>
+        <div>
+          <a-button class="location__btns__element" @click="goToOrdersInfo"
+            >Orders</a-button
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -268,7 +273,7 @@ p {
 .location__btns {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding-right: 20px;
 }
 .location__btns__element {
@@ -282,5 +287,22 @@ p {
 .location__btns__element:hover {
   border: 1px solid white;
   color: white;
+}
+.location__btns__delete {
+  margin-left: 10px;
+  border: 1px solid red;
+  border-radius: 8px;
+  background-color: #cc2f07;
+  font-family: "Poppins";
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.location__btns__delete:hover {
+  border: 1px solid white;
+  color: white;
+}
+.location__btns__manage {
+  display: flex;
+  flex-direction: row;
 }
 </style>

@@ -10,5 +10,3 @@ components.forEach((component) => {
 });
 
 app.use(Antd).use(router).mount("#app");
-
-router.push("/login");
