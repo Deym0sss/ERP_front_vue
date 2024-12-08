@@ -1,89 +1,81 @@
 <template>
   <div class="wrapper">
     <MyHeader />
-    <div class="content">
-      <div class="content__locationInfo">
-        <div class="content__locationInfo__element" v-if="locationInfo">
-          <label>Title</label>
-          <p>{{ this.locationInfo.title }}</p>
-        </div>
-        <div class="content__locationInfo__element" v-if="locationInfo">
-          <label>Description</label>
-          <p>{{ this.locationInfo.description }}</p>
-        </div>
-        <div class="content__locationInfo__element" v-if="locationInfo">
-          <label>Address</label>
-          <p>{{ this.locationInfo.address }}</p>
-        </div>
-        <div class="content__locationInfo__element" v-if="locationInfo">
-          <label>City</label>
-          <p>{{ this.locationInfo.city }}</p>
-        </div>
-        <div class="content__locationInfo__element" v-if="locationInfo">
-          <label>Country</label>
-          <p>{{ this.locationInfo.country }}</p>
+    <div class="content" v-show="logoUrl">
+      <!-- Location Info -->
+      <div
+        v-show="locationInfo"
+        v-memo="[locationInfo]"
+        class="content__locationInfo"
+      >
+        <div
+          v-for="(value, key) in locationInfoFields"
+          :key="key"
+          class="content__locationInfo__element"
+        >
+          <label>{{ key }}</label>
+          <p>{{ value }}</p>
         </div>
       </div>
-      <!--  -->
-      <div class="content__staff">
+
+      <!-- Staff Info -->
+      <div v-show="staffInfo" class="content__staff">
         <label>Workers</label>
         <hr />
         <div
-          class="content__staff__info"
           v-for="user in staffInfo"
           :key="user._id"
+          class="content__staff__info"
         >
-          <div class="content__staff__Info__element" v-if="locationInfo">
-            <p>{{ user.name }} {{ user.surname }} - {{ user.role }};</p>
-          </div>
+          <p>{{ user.name }} {{ user.surname }} - {{ user.role }}</p>
         </div>
         <a-button @click="goToStaffInfo" class="staffBtn">Manage</a-button>
       </div>
 
-      <div>
-        <img class="content__logo" v-if="logoUrl" :src="logoUrl" alt="Logo" />
+      <!-- Logo -->
+      <div v-show="locationInfo">
+        <img
+          loading="lazy"
+          v-show="logoUrl"
+          class="content__logo"
+          :src="logoUrl"
+          alt="Logo"
+        />
       </div>
     </div>
-    <!--  -->
+
+    <!-- Table -->
     <div class="table">
-      <a-table bordered :dataSource="dataSource" :columns="columns"
-        ><template #bodyCell="{ column, record }">
+      <a-table
+        :pagination="true"
+        bordered
+        :dataSource="dataSource"
+        :columns="columns"
+      >
+        <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
-            <span
-              style="
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-              "
-            >
+            <span class="table-actions">
               <a-button @click="onOpenAsset(record)">Open</a-button>
               <a-button @click="onDeleteAsset(record)">Delete</a-button>
             </span>
           </template>
-        </template></a-table
-      >
+        </template>
+      </a-table>
     </div>
-    <!--  -->
+
+    <!-- Buttons -->
     <div class="location__btns">
-      <div>
-        <a-button class="location__btns__delete">Delete location</a-button>
-      </div>
+      <a-button class="location__btns__delete">Delete location</a-button>
       <div class="location__btns__manage">
-        <div>
-          <a-button class="location__btns__element" @click="goToCreateAsset"
-            >Add asset</a-button
-          >
-        </div>
-        <div>
-          <a-button class="location__btns__element" @click="goToInventory"
-            >Inventorize</a-button
-          >
-        </div>
-        <div>
-          <a-button class="location__btns__element" @click="goToOrdersInfo"
-            >Orders</a-button
-          >
-        </div>
+        <a-button class="location__btns__element" @click="goToCreateAsset"
+          >Add asset</a-button
+        >
+        <a-button class="location__btns__element" @click="goToInventory"
+          >Inventorize</a-button
+        >
+        <a-button class="location__btns__element" @click="goToOrdersInfo"
+          >Orders</a-button
+        >
       </div>
     </div>
   </div>
@@ -103,52 +95,39 @@ export default {
       logoUrl: null,
       dataSource: null,
       columns: [
-        {
-          title: "Title",
-          dataIndex: "title",
-          key: "title",
-          width: "25%",
-        },
-        {
-          title: "Tag",
-          dataIndex: "tag",
-          key: "tag",
-        },
-        {
-          title: "Amount",
-          dataIndex: "value",
-          key: "value",
-          width: "15%",
-        },
-        {
-          title: "Cost",
-          dataIndex: "cost",
-          key: "cost",
-        },
-        {
-          title: "Action",
-          key: "action",
-          width: "15%",
-        },
+        { title: "Title", dataIndex: "title", key: "title", width: "25%" },
+        { title: "Tag", dataIndex: "tag", key: "tag" },
+        { title: "Amount", dataIndex: "value", key: "value", width: "15%" },
+        { title: "Cost", dataIndex: "cost", key: "cost" },
+        { title: "Action", key: "action", width: "15%" },
       ],
     };
+  },
+  computed: {
+    locationInfoFields() {
+      if (!this.locationInfo) return {};
+      return {
+        Title: this.locationInfo.title,
+        Description: this.locationInfo.description,
+        Address: this.locationInfo.address,
+        City: this.locationInfo.city,
+        Country: this.locationInfo.country,
+      };
+    },
   },
   methods: {
     getLocationInfo() {
       axios
         .get(`http://localhost:5000/location/ids/${this.locationId}`)
         .then((response) => {
-          this.locationInfo = JSON.parse(
-            JSON.stringify(response.data.locations[0])
-          );
+          this.locationInfo = response.data.locations[0];
         });
     },
-
     getStaffInfo() {
       axios
         .get(`http://localhost:5000/auth/all/${this.locationId}`)
         .then((response) => {
-          this.staffInfo = JSON.parse(JSON.stringify(response.data.users));
+          this.staffInfo = response.data.users;
           this.getLogo();
         });
     },
@@ -156,10 +135,9 @@ export default {
       axios
         .get(`http://localhost:5000/asset/all/${this.locationId}`)
         .then((response) => {
-          this.dataSource = JSON.parse(JSON.stringify(response.data.assets));
+          this.dataSource = response.data.assets;
         });
     },
-
     getLogo() {
       if (this.locationInfo) {
         axios
@@ -167,8 +145,7 @@ export default {
             responseType: "blob",
           })
           .then((response) => {
-            const logoUrl = URL.createObjectURL(response.data);
-            this.logoUrl = logoUrl;
+            this.logoUrl = URL.createObjectURL(response.data);
           });
       }
     },
@@ -187,7 +164,6 @@ export default {
     goToOrdersInfo() {
       router.push(`/orders/${this.locationId}`);
     },
-
     onDeleteAsset(asset) {
       axios
         .delete(`http://localhost:5000/asset/${asset._id}`)
